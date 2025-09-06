@@ -5,6 +5,7 @@ import Loader from "../components/Loader";
 import Navbar from "../components/Navbar";
 import { useSelector } from "react-redux";
 import Footer from "../components/Footer";
+import { API_BASE_URL } from "../config/api";
 
 const LotDetails = () => {
   const [loading, setLoading] = useState(true);
@@ -25,7 +26,7 @@ const LotDetails = () => {
   const getLotDetails = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3002/lots/${lotId}`,
+        `${API_BASE_URL}/lots/${lotId}`,
         {
           method: "GET",
         }
@@ -42,7 +43,7 @@ const LotDetails = () => {
   const getBids = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3002/bids/lot/${lotId}`,
+        `${API_BASE_URL}/bids/lot/${lotId}`,
         {
           method: "GET",
         }
@@ -60,7 +61,7 @@ const LotDetails = () => {
     
     try {
       const response = await fetch(
-        `http://localhost:3002/bids/user/${user._id}/lot/${lotId}`,
+        `${API_BASE_URL}/bids/user/${user._id}/lot/${lotId}`,
         {
           method: "GET",
         }
@@ -78,7 +79,7 @@ const LotDetails = () => {
   const endAuction = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3002/lots/${lotId}/end`,
+        `${API_BASE_URL}/lots/${lotId}/end`,
         {
           method: "POST",
         }
@@ -176,7 +177,7 @@ const LotDetails = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:3002/bids/create", {
+      const response = await fetch(`${API_BASE_URL}/bids/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -213,7 +214,7 @@ const LotDetails = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:3002/bids/user/${user._id}/lot/${lotId}`,
+        `${API_BASE_URL}/bids/user/${user._id}/lot/${lotId}`,
         {
           method: "DELETE",
         }
@@ -326,7 +327,7 @@ const LotDetails = () => {
           <div className="lot-image-section">
             <div className="photos">
               <img
-                src={`http://localhost:3002/${lot.imageUrl.replace("public", "")}`}
+                src={lot.imageUrl.replace('public', '')}
                 alt="lot photo"
               />
             </div>

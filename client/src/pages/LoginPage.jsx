@@ -3,6 +3,7 @@ import "../styles/Login.scss";
 import { setLogin } from "../redux/state";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../config/api";
 
 const LoginPage = () => {
   const [emailOrUsername, setEmailOrUsername] = useState("");
@@ -18,7 +19,7 @@ const LoginPage = () => {
     setError(""); // Очищаем предыдущие ошибки
 
     try {
-      const response = await fetch("http://localhost:3002/auth/login", {
+      const response = await fetch(`${API_BASE_URL}/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

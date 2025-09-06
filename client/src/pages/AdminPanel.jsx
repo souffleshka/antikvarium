@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Loader from "../components/Loader";
+import { API_BASE_URL } from "../config/api";
 import "../styles/AdminPanel.scss";
 
 const AdminPanel = () => {
@@ -29,7 +30,7 @@ const AdminPanel = () => {
 
   const getLots = async () => {
     try {
-      const response = await fetch("http://localhost:3002/lots", {
+      const response = await fetch(`${API_BASE_URL}/lots`, {
         method: "GET",
       });
       const data = await response.json();
@@ -52,7 +53,7 @@ const AdminPanel = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:3002/lots/${lotId}`, {
+      const response = await fetch(`${API_BASE_URL}/lots/${lotId}`, {
         method: "DELETE",
       });
 
@@ -91,7 +92,7 @@ const AdminPanel = () => {
             {lots.map((lot) => (
               <div key={lot._id} className="lot-item">
                 <img
-                  src={`http://localhost:3002/${lot.imageUrl.replace("public", "")}`}
+                  src={lot.imageUrl.replace('public', '')}
                   alt={lot.title}
                 />
                 <div className="lot-info">

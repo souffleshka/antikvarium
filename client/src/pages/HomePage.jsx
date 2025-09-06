@@ -4,6 +4,7 @@ import Footer from "../components/Footer";
 import Loader from "../components/Loader";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { API_BASE_URL } from "../config/api";
 import "../styles/HomePage.scss";
 
 const HomePage = () => {
@@ -15,7 +16,7 @@ const HomePage = () => {
 
   const getLots = async () => {
     try {
-      const response = await fetch("http://localhost:3002/lots", {
+      const response = await fetch(`${API_BASE_URL}/lots`, {
         method: "GET",
       });
       const data = await response.json();
@@ -34,7 +35,7 @@ const HomePage = () => {
       const bids = {};
       for (const lot of lots) {
         try {
-          const response = await fetch(`http://localhost:3002/bids/user/${user._id}/lot/${lot._id}`);
+          const response = await fetch(`${API_BASE_URL}/bids/user/${user._id}/lot/${lot._id}`);
           if (response.ok) {
             const bid = await response.json();
             if (bid) {
@@ -127,7 +128,7 @@ const HomePage = () => {
                 >
                   <div className="lot-image">
                     <img
-                      src={`http://localhost:3002/${lot.imageUrl.replace("public", "")}`}
+                      src={lot.imageUrl.replace('public', '')}
                       alt={lot.title}
                     />
                   </div>

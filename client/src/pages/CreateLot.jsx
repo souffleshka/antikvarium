@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { API_BASE_URL } from "../config/api";
 import "../styles/CreateLot.scss";
 
 const CreateLot = () => {
@@ -74,7 +75,7 @@ const CreateLot = () => {
       formDataToSend.append("creator", user._id);
       formDataToSend.append("image", selectedImage);
 
-      const response = await fetch("http://localhost:3002/lots/create", {
+      const response = await fetch(`${API_BASE_URL}/lots/create`, {
         method: "POST",
         body: formDataToSend,
       });

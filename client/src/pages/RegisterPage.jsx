@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../config/api";
 import "../styles/Register.scss";
 
 const RegisterPage = () => {
@@ -36,7 +37,7 @@ const RegisterPage = () => {
     setError(""); // Очищаем предыдущие ошибки
 
     try {
-      const response = await fetch("http://localhost:3002/auth/register", {
+      const response = await fetch(`${API_BASE_URL}/auth/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
