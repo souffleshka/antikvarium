@@ -34,7 +34,7 @@ services:
     depends_on:
       - mongodb
     volumes:
-      - ./server/public/uploads:/app/public/uploads
+      - uploads_data:/app/public/uploads
     networks:
       - antikvarium-network
 
@@ -89,6 +89,7 @@ services:
 
 volumes:
   mongodb_data:
+  uploads_data:
 
 networks:
   antikvarium-network:
