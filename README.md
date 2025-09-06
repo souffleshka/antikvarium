@@ -1,1 +1,1 @@
-Rental React JS application for MIREA
+React JS application for MIREA
