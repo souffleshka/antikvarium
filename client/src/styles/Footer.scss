@@ -1,0 +1,111 @@
+@import "./variables.scss";
+@import "./breakpoints.scss";
+
+.footer {
+  background: #000000;
+  color: white;
+  margin-top: 0;
+  
+  a {
+    color: white;
+    text-decoration: none;
+    font-size: 20px;
+    font-weight: bold;
+    transition: color 0.3s ease;
+    
+    &:hover {
+      color: #3498db;
+    }
+  }
+  
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 50px;
+  padding: 40px 70px;
+
+  @include lg {
+    padding: 30px 30px;
+  }
+
+  &_left {
+    max-width: 400px;
+
+    img {
+      max-width: 150px;
+      margin-bottom: 20px;
+    }
+
+    &_socials {
+      display: flex;
+      gap: 25px;
+      margin-top: 20px;
+
+      &_icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #3498db, #2980b9);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        color: white;
+
+        &:hover {
+          transform: scale(1.2);
+          background: linear-gradient(135deg, #2980b9, #1f4e79);
+        }
+      }
+    }
+  }
+
+  &_center {
+    text-decoration: none;
+
+    ul {
+      list-style: none;
+      margin-top: 20px;
+      cursor: pointer;
+
+      li:hover {
+        color: #3498db;
+      }
+
+      a {
+        text-decoration: none;
+        color: white;
+
+        &:hover {
+          color: #3498db;
+        }
+      }
+    }
+
+    @include md {
+      display: none;
+    }
+  }
+
+  &_right {
+    max-width: 350px;
+
+    h3 {
+      margin-bottom: 20px;
+    }
+
+    &_info {
+      display: flex;
+
+      p {
+        margin-left: 20px;
+        margin-bottom: 15px;
+      }
+    }
+
+    @include sm {
+      display: none;
+    }
+  }
+}
