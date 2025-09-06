@@ -103,7 +103,12 @@ router.post("/:lotId/end", async (req, res) => {
       .populate("userId", "username")
       .sort({ amount: -1 });
 
+    console.log("Highest bid found:", highestBid);
     if (highestBid) {
+      console.log("Highest bid userId:", highestBid.userId);
+    }
+
+    if (highestBid && highestBid.userId && highestBid.userId._id) {
       // Update lot with winner and mark as sold
       await Lot.findByIdAndUpdate(lotId, {
         status: "sold",

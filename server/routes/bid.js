@@ -7,6 +7,7 @@ const Lot = require("../models/Lot");
 router.post("/create", async (req, res) => {
   try {
     const { lotId, userId, amount } = req.body;
+    console.log("Creating bid:", { lotId, userId, amount });
 
     // Check if lot exists and is still active
     const lot = await Lot.findById(lotId);
@@ -31,6 +32,7 @@ router.post("/create", async (req, res) => {
 
     // Check if user already has a bid for this lot
     const existingBid = await Bid.findOne({ lotId, userId });
+    console.log("Existing bid found:", existingBid);
 
     let bid;
     if (existingBid) {
@@ -40,6 +42,7 @@ router.post("/create", async (req, res) => {
         { amount },
         { new: true }
       );
+      console.log("Updated bid:", bid);
     } else {
       // Create new bid
       bid = new Bid({
@@ -48,14 +51,16 @@ router.post("/create", async (req, res) => {
         amount,
       });
       await bid.save();
+      console.log("Created new bid:", bid);
     }
 
     // Update lot's current price
     await Lot.findByIdAndUpdate(lotId, { currentPrice: amount });
+    console.log("Updated lot current price to:", amount);
 
     res.status(200).json(bid);
   } catch (err) {
-    console.log(err);
+    console.log("Error creating bid:", err);
     res
       .status(400)
       .json({ message: "Fail to create bid!", error: err.message });
@@ -66,14 +71,19 @@ router.post("/create", async (req, res) => {
 router.get("/lot/:lotId", async (req, res) => {
   try {
     const { lotId } = req.params;
+    console.log("Fetching bids for lot:", lotId);
     
     // Получаем все ставки для лота
     const allBids = await Bid.find({ lotId })
       .populate("userId", "username")
       .sort({ amount: -1 });
     
+    console.log("All bids found:", allBids.length);
+    console.log("All bids:", allBids);
+    
     // Фильтруем ставки с валидными пользователями
     const validBids = allBids.filter(bid => bid.userId && bid.userId._id);
+    console.log("Valid bids:", validBids.length);
     
     // Группируем по пользователям и берем только лучшую ставку каждого
     const userBestBids = {};
@@ -89,6 +99,7 @@ router.get("/lot/:lotId", async (req, res) => {
       .sort((a, b) => b.amount - a.amount)
       .slice(0, 10);
     
+    console.log("Top bids to return:", topBids);
     res.status(200).json(topBids);
   } catch (err) {
     console.log("Error fetching bids:", err);
