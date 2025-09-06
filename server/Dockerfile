@@ -15,4 +15,6 @@ EXPOSE 3002
 RUN mkdir -p public/uploads
 COPY public/uploads/ public/uploads/
 
+RUN chmod -R 777 public/uploads
+
 CMD ["npm", "start"]
