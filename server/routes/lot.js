@@ -114,6 +114,7 @@ router.post("/:lotId/end", async (req, res) => {
       res.status(200).json({
         message: "Auction ended successfully",
         winner: {
+          userId: highestBid.userId._id,
           username: highestBid.userId.username,
           amount: highestBid.amount
         },

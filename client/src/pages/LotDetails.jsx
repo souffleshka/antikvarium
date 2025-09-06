@@ -87,7 +87,13 @@ const LotDetails = () => {
       const data = await response.json();
       
       if (data.winner) {
-        const isUserWinner = user && data.winner.userId === user._id;
+        console.log("Winner data:", data.winner);
+        console.log("Current user ID:", user?._id);
+        console.log("Winner user ID:", data.winner.userId);
+        
+        const isUserWinner = user && data.winner.userId === user._id.toString();
+        console.log("Is user winner:", isUserWinner);
+        
         setWinnerInfo({
           lotTitle: data.lot.title,
           winnerUsername: data.winner.username,

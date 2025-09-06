@@ -1,0 +1,95 @@
+services:
+  # MongoDB сервис
+  mongodb:
+    image: mongo:7.0
+    container_name: antikvarium-mongodb
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password123
+      MONGO_INITDB_DATABASE: Dream_Nest
+      TZ: Europe/Moscow
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+      - ./mongo-init:/docker-entrypoint-initdb.d
+    networks:
+      - antikvarium-network
+
+  # Backend сервис
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: antikvarium-server
+    restart: unless-stopped
+    environment:
+      MONGO_URL: mongodb://admin:password123@mongodb:27017/Dream_Nest?authSource=admin
+      NODE_ENV: production
+      JWT_SECRET: super-secret-jwt-key
+      TZ: Europe/Moscow
+    ports:
+      - "3002:3002"
+    depends_on:
+      - mongodb
+    volumes:
+      - ./server/public/uploads:/app/public/uploads
+    networks:
+      - antikvarium-network
+
+  # Frontend сервис
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: antikvarium-client
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    depends_on:
+      - server
+    networks:
+      - antikvarium-network
+
+  # Сервис для создания админа
+  admin-init:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: antikvarium-admin-init
+    environment:
+      MONGO_URL: mongodb://admin:password123@mongodb:27017/Dream_Nest?authSource=admin
+      JWT_SECRET: super-secret-jwt-key
+      TZ: Europe/Moscow
+    depends_on:
+      - mongodb
+    command: node createAdmin.js
+    networks:
+      - antikvarium-network
+    restart: "no"
+
+  # Сервис для инициализации данных
+  data-init:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: antikvarium-data-init
+    environment:
+      MONGO_URL: mongodb://admin:password123@mongodb:27017/Dream_Nest?authSource=admin
+      JWT_SECRET: super-secret-jwt-key
+      TZ: Europe/Moscow
+    depends_on:
+      - mongodb
+      - admin-init
+    command: node initData.js
+    networks:
+      - antikvarium-network
+    restart: "no"
+
+volumes:
+  mongodb_data:
+
+networks:
+  antikvarium-network:
+    driver: bridge
